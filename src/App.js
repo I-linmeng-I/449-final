@@ -60,10 +60,10 @@ function UserName({ addTodo }) {
     document.getElementsByClassName('username-input')[0].style.display = 'none'
     document.getElementsByClassName('todo-input')[0].style.display = 'block'
     
-    let username = ""
+    let username = {}
     {data.map(user => {
       const name = user.userName
-      username = name// 将user.id赋值给userId变量
+      username.push(name)// 将user.id赋值给userId变量
       
     })}
 
