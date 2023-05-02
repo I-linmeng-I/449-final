@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { useState, useEffect } from 'react';
+import 'animate.css'
+
 const { createClient } = require('@supabase/supabase-js');
 const supabaseUrl = 'https://eggtdvvjoksncmdbxgsz.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVnZ3RkdnZqb2tzbmNtZGJ4Z3N6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzgxNjE4MDgsImV4cCI6MTk5MzczNzgwOH0.1PNSCvjCrAqMEUPXpPX6qwZCqTRexjWZuhIzSZeorK0'
