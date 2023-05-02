@@ -59,8 +59,16 @@ function UserName({ addTodo }) {
     CurrentUserName = value
     document.getElementsByClassName('username-input')[0].style.display = 'none'
     document.getElementsByClassName('todo-input')[0].style.display = 'block'
-    console.log(data.row.userName)
+    
+    let username = ""
+    {data.map(user => {
+      const name = user.userName
+      username = name// 将user.id赋值给userId变量
+      
+    })}
 
+    console.log(username)
+    
     setValue('')
   }
   return <form onSubmit={handleSubmit}>
