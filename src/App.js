@@ -63,6 +63,7 @@ function UserName({ addTodo}) {
     {data.map(user => {
       username.push(user.userName)// 将user.id赋值给userId变量
       tododata.push(user.things)
+      return null
     })}
 
     let newTodos = [];
