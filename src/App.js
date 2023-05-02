@@ -69,7 +69,7 @@ function UserName({ addTodo}) {
 
     let newTodos = [];
     for(let i = 0;i < username.length;i++){
-      if(username[i]==CurrentUserName){
+      if(username[i]===CurrentUserName){
         newTodos.push(tododata[i]);  
       }
     }
@@ -88,7 +88,7 @@ function App() {
   
   const addTodo = text => {
     for (let i = 0; i < todos.length; i++) {
-      if (text == todos[i].text) {
+      if (text === todos[i].text) {
         animateCSS(document.querySelector('.todo-list input'), 'jello')
         document.querySelector('.todo-list input').placeholder = 'Repeat!'
         setTimeout(function () {
@@ -108,7 +108,7 @@ function App() {
   }
   const compeleteTodo = index => {
     const newTodos = [...todos]
-    if (newTodos[index].isCompleted != true) {
+    if (newTodos[index].isCompleted !== true) {
       newTodos[index].isCompleted = true;
       let todoitem = document.querySelectorAll('.todo-item-content')
       animateCSS(todoitem[index], 'tada')
@@ -117,7 +117,7 @@ function App() {
   }
   const unCompeleteTodo = index => {
     const newTodos = [...todos]
-    if (newTodos[index].isCompleted == true) {
+    if (newTodos[index].isCompleted === true) {
       newTodos[index].isCompleted = false;
       let todoitem = document.querySelectorAll('.todo-item-content')
       animateCSS(todoitem[index], 'tada')
