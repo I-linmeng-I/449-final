@@ -26,7 +26,7 @@ function TodoForm({ addTodo }) {
   const [value, setValue] = useState('')
   const handleSubmit = e => {
     e.preventDefault();
-    if(!value)return
+    if (!value) return
     addTodo(value);
     setValue('')
   }
@@ -35,7 +35,7 @@ function TodoForm({ addTodo }) {
   </form>
 }
 
-function UserName({ addTodo}) {
+function UserName({ addTodo, removeTodo }) {
   const [value, setValue] = useState('')
 
   const [data, setData] = useState([]);
@@ -58,22 +58,34 @@ function UserName({ addTodo}) {
     CurrentUserName = value
     document.getElementsByClassName('username-input')[0].style.display = 'none'
     document.getElementsByClassName('todo-input')[0].style.display = 'block'
-    
+
+
     let username = []
     let tododata = []
+    let todoid = []
+    let isCompletedlist = []
     data.map(user => {
       username.push(user.userName)// 将user.id赋值给userId变量
-      tododata.push(user.things)
+      tododata.push(user.todo)
+      isCompletedlist.push(user.iscompleted)
+      todoid.push(user.id)
       return null
     })
 
+
+
     let newTodos = [];
-    for(let i = 0;i < username.length;i++){
-      if(username[i]===CurrentUserName){
-        newTodos.push(tododata[i]);  
+    for (let i = 0; i < username.length; i++) {
+      if (username[i] === CurrentUserName) {
+        const text = tododata[i]
+        const id = todoid[i]
+        const isCompleted = isCompletedlist[i]
+        newTodos.push({ text: text, isCompleted: isCompleted, id: id });
       }
     }
+    removeTodo(0)
     addTodo(newTodos);
+
     setValue('')
   }
   return <form onSubmit={handleSubmit}>
@@ -83,10 +95,15 @@ function UserName({ addTodo}) {
 
 function App() {
   const [todos, setTodos] = useState([
-    { text: 'Enter a nickname to save your todo list!', isCompleted: false }
+    { text: 'Enter a nickname to save your todo list!', isCompleted: false, id: 0 }
   ])
-  
-  const addTodo = text => {
+
+  const updateTodolist = index => {
+
+  }
+
+  const addTodo = async text => {
+
     for (let i = 0; i < todos.length; i++) {
       if (text === todos[i].text) {
         animateCSS(document.querySelector('.todo-list input'), 'jello')
@@ -98,13 +115,28 @@ function App() {
       }
     }
     const newTodos = [...todos]
-    for(let i =0;i<text.length;i++){
-      const content=text[i]
-      newTodos.push({text:content,isCompleted: false})
+
+
+    if (Array.isArray(text) === true) {
+      for (let i = 0; i < text.length; i++) {
+        const content = text[i].text
+        newTodos.push({ text: content, id: text[i].id })
+      }
     }
-    setTodos(newTodos)
+    else {
+      const id = todos.length + 1
+      newTodos.push({ text, isCompleted: false, id: text.id })
+      const { data, error } = await supabase.from('todolist').insert([{ userName:CurrentUserName,todo:text,iscompleted:false }]);
+      if (error) {
+        console.error(error);
+        return;
+      }
+    }
+
+
     console.log(newTodos)
-    
+    setTodos(newTodos)
+
   }
   const compeleteTodo = index => {
     const newTodos = [...todos]
@@ -161,7 +193,7 @@ function App() {
           todos.map((todo, index) => { return <Todo key={index} todo={todo} index={index} compeleteTodo={compeleteTodo} unCompeleteTodo={unCompeleteTodo} removeTodo={removeTodo}></Todo> })
         }
         <TodoForm addTodo={addTodo}></TodoForm>
-        <UserName addTodo={addTodo} removeTodo={setTodos}></UserName>
+        <UserName addTodo={addTodo} removeTodo={removeTodo}></UserName>
       </div>
 
     </div>
