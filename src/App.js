@@ -61,11 +61,11 @@ function UserName({ addTodo}) {
     
     let username = []
     let tododata = []
-    {data.map(user => {
+    data.map(user => {
       username.push(user.userName)// 将user.id赋值给userId变量
       tododata.push(user.things)
       return null
-    })}
+    })
 
     let newTodos = [];
     for(let i = 0;i < username.length;i++){
