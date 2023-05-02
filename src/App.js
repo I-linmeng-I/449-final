@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { useState, useEffect } from 'react';
+import 'animate.css'
 
 import { createClient } from "@supabase/supabase-js"
 import * as SupabaseSupabaseJs from "https://cdn.skypack.dev/@supabase/supabase-js@2.10.0";
@@ -27,7 +28,7 @@ function TodoForm({ addTodo }) {
   const [value, setValue] = useState('')
   const handleSubmit = e => {
     e.preventDefault();
-    if (!value) return;
+    if(!value)return
     addTodo(value);
     setValue('')
   }
@@ -36,7 +37,7 @@ function TodoForm({ addTodo }) {
   </form>
 }
 
-function UserName({ addTodo }) {
+function UserName({ addTodo}) {
   const [value, setValue] = useState('')
 
   const [data, setData] = useState([]);
@@ -60,15 +61,22 @@ function UserName({ addTodo }) {
     document.getElementsByClassName('username-input')[0].style.display = 'none'
     document.getElementsByClassName('todo-input')[0].style.display = 'block'
     
-    let username = {}
+    let username = new Array()
+    let tododata = new Array()
     {data.map(user => {
       const name = user.userName
       username.push(name)// 将user.id赋值给userId变量
-      
+      const things = user.things
+      tododata.push(things)
     })}
 
-    console.log(username)
-    
+    const newTodos = [];
+    for(let i =0;i<username.length;i++){
+      if(username[i]==CurrentUserName){
+        newTodos.push(tododata[i]);  
+      }
+    }
+    addTodo(newTodos);
     setValue('')
   }
   return <form onSubmit={handleSubmit}>
@@ -80,6 +88,7 @@ function App() {
   const [todos, setTodos] = useState([
     { text: 'Enter a nickname to save your todo list!', isCompleted: false }
   ])
+  
   const addTodo = text => {
     for (let i = 0; i < todos.length; i++) {
       if (text == todos[i].text) {
@@ -91,12 +100,17 @@ function App() {
         return
       }
     }
-    const newTodos = [...todos, { text }]
+    const newTodos = [...todos]
+    for(let i =0;i<text.length;i++){
+      const content=text[i]
+      newTodos.push({text:content,isCompleted: false})
+    }
     setTodos(newTodos)
+    console.log(newTodos)
+    
   }
   const compeleteTodo = index => {
     const newTodos = [...todos]
-    console.log(newTodos)
     if (newTodos[index].isCompleted != true) {
       newTodos[index].isCompleted = true;
       let todoitem = document.querySelectorAll('.todo-item-content')
@@ -150,7 +164,7 @@ function App() {
           todos.map((todo, index) => { return <Todo key={index} todo={todo} index={index} compeleteTodo={compeleteTodo} unCompeleteTodo={unCompeleteTodo} removeTodo={removeTodo}></Todo> })
         }
         <TodoForm addTodo={addTodo}></TodoForm>
-        <UserName addTodo={addTodo}></UserName>
+        <UserName addTodo={addTodo} removeTodo={setTodos}></UserName>
       </div>
 
     </div>
