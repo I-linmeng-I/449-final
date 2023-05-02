@@ -59,22 +59,22 @@ function UserName({ addTodo}) {
     document.getElementsByClassName('username-input')[0].style.display = 'none'
     document.getElementsByClassName('todo-input')[0].style.display = 'block'
     
-    let username = new Array()
-    let tododata = new Array()
-    {data.map(user => {
-      const name = user.userName
-      username.push(name)// 将user.id赋值给userId变量
-      const things = user.things
-      tododata.push(things)
-    })}
+    // let username = new Array()
+    // let tododata = new Array()
+    // {data.map(user => {
+    //   const name = user.userName
+    //   username.push(name)// 将user.id赋值给userId变量
+    //   const things = user.things
+    //   tododata.push(things)
+    // })}
 
-    const newTodos = [];
-    for(let i =0;i<username.length;i++){
-      if(username[i]==CurrentUserName){
-        newTodos.push(tododata[i]);  
-      }
-    }
-    addTodo(newTodos);
+    // const newTodos = [];
+    // for(let i =0;i<username.length;i++){
+    //   if(username[i]==CurrentUserName){
+    //     newTodos.push(tododata[i]);  
+    //   }
+    // }
+    // addTodo(newTodos);
     setValue('')
   }
   return <form onSubmit={handleSubmit}>
