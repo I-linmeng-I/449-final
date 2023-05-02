@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React, { useState, useEffect } from 'react';
 
-import { createClient } from "https://cdn.skypack.dev/@supabase/supabase-js@2.10.0"
+import { createClient } from "@supabase/supabase-js"
 import * as SupabaseSupabaseJs from "https://cdn.skypack.dev/@supabase/supabase-js@2.10.0";
 const supabaseUrl = 'https://eggtdvvjoksncmdbxgsz.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVnZ3RkdnZqb2tzbmNtZGJ4Z3N6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzgxNjE4MDgsImV4cCI6MTk5MzczNzgwOH0.1PNSCvjCrAqMEUPXpPX6qwZCqTRexjWZuhIzSZeorK0'
@@ -59,18 +59,7 @@ function UserName({ addTodo }) {
     CurrentUserName = value
     document.getElementsByClassName('username-input')[0].style.display = 'none'
     document.getElementsByClassName('todo-input')[0].style.display = 'block'
-    let allName = ''
-    let allTodo = ''
-    {data.map((row)=>(
-      allName.add(row.userName),
-      allTodo.add(row.things)
-    )
-    )}
-    for(let i =0 ;i<allName.length;i++){
-      if(allName[i]==CurrentUserName){
-        addTodo(allTodo[i])
-      }
-    }
+    console.log(data.row.userName)
 
     setValue('')
   }
