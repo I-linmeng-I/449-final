@@ -83,7 +83,6 @@ function UserName({ addTodo, removeTodo }) {
         newTodos.push({ text: text, isCompleted: isCompleted, id: id });
       }
     }
-    removeTodo(0)
     addTodo(newTodos);
 
     setValue('')
@@ -94,13 +93,7 @@ function UserName({ addTodo, removeTodo }) {
 }
 
 function App() {
-  const [todos, setTodos] = useState([
-    { text: 'Enter a nickname to save your todo list!', isCompleted: false, id: 0 }
-  ])
-
-  const updateTodolist = index => {
-
-  }
+  const [todos, setTodos] = useState([])
 
   const addTodo = async text => {
 
@@ -114,49 +107,71 @@ function App() {
         return
       }
     }
-    const newTodos = [...todos]
-
+    let newTodos = [...todos]
 
     if (Array.isArray(text) === true) {
+
       for (let i = 0; i < text.length; i++) {
+
         const content = text[i].text
-        newTodos.push({ text: content, id: text[i].id })
+        newTodos.push({ text: content, id: text[i].id , isCompleted:text[i].isCompleted })
+        console.log(newTodos)
       }
     }
     else {
       const id = todos.length + 1
       newTodos.push({ text, isCompleted: false, id: text.id })
-      const { data, error } = await supabase.from('todolist').insert([{ userName:CurrentUserName,todo:text,iscompleted:false }]);
+      const { data, error } = await supabase.from('todolist').insert([{ userName: CurrentUserName, todo: text, iscompleted: false }]);
       if (error) {
         console.error(error);
         return;
       }
     }
 
-
-    console.log(newTodos)
     setTodos(newTodos)
 
   }
-  const compeleteTodo = index => {
+
+
+  const compeleteTodo = async index => {
     const newTodos = [...todos]
     if (newTodos[index].isCompleted !== true) {
       newTodos[index].isCompleted = true;
       let todoitem = document.querySelectorAll('.todo-item-content')
       animateCSS(todoitem[index], 'tada')
+
+      const { data, error } = await supabase
+        .from('todolist')
+        .update({ iscompleted: true })
+        .eq('id', todos[index].id)
+      if (error) {
+        console.error(error);
+        return;
+      }
     }
     setTodos(newTodos)
   }
-  const unCompeleteTodo = index => {
+  const unCompeleteTodo = async index => {
     const newTodos = [...todos]
     if (newTodos[index].isCompleted === true) {
       newTodos[index].isCompleted = false;
       let todoitem = document.querySelectorAll('.todo-item-content')
       animateCSS(todoitem[index], 'tada')
+
+      const { data, error } = await supabase
+        .from('todolist')
+        .update({ iscompleted: false })
+        .eq('id', todos[index].id)
+      if (error) {
+        console.error(error);
+        return;
+      }
     }
     setTodos(newTodos)
   }
-  const removeTodo = index => {
+
+
+  const removeTodo = async index => {
     const newTodos = [...todos]
     let todoitem = document.querySelectorAll('.todo-item')
     todoitem[index].classList.add("animate__bounceOut")
@@ -164,7 +179,14 @@ function App() {
       newTodos.splice(index, 1)
       setTodos(newTodos)
     }, 700);
-
+    const { data, error } = await supabase
+      .from('todolist')
+      .delete()
+      .match({ id: todos[index].id });
+    if (error) {
+      console.error(error);
+      return;
+    }
   }
 
   const animateCSS = (node, animation, prefix = 'animate__') =>
@@ -187,7 +209,7 @@ function App() {
   return (
     <div className="App">
 
-      <h1>TodoList</h1>
+      <h1 onClick={() => window.location.reload()}>TodoList</h1>
       <div className="todo-list">
         {
           todos.map((todo, index) => { return <Todo key={index} todo={todo} index={index} compeleteTodo={compeleteTodo} unCompeleteTodo={unCompeleteTodo} removeTodo={removeTodo}></Todo> })
