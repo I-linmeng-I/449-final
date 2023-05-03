@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-// import 'animate.css'
+import 'animate.css'
 
 const { createClient } = require('@supabase/supabase-js');
 const supabaseUrl = 'https://eggtdvvjoksncmdbxgsz.supabase.co'
@@ -119,9 +119,9 @@ function App() {
       }
     }
     else {
-      const id = todos.length + 1
+      
       newTodos.push({ text, isCompleted: false, id: text.id })
-      const { data, error } = await supabase.from('todolist').insert([{ userName: CurrentUserName, todo: text, iscompleted: false }]);
+      const { error } = await supabase.from('todolist').insert([{ userName: CurrentUserName, todo: text, iscompleted: false }]);
       if (error) {
         console.error(error);
         return;
@@ -140,7 +140,7 @@ function App() {
       let todoitem = document.querySelectorAll('.todo-item-content')
       animateCSS(todoitem[index], 'tada')
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('todolist')
         .update({ iscompleted: true })
         .eq('id', todos[index].id)
@@ -158,7 +158,7 @@ function App() {
       let todoitem = document.querySelectorAll('.todo-item-content')
       animateCSS(todoitem[index], 'tada')
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('todolist')
         .update({ iscompleted: false })
         .eq('id', todos[index].id)
