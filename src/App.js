@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import 'animate.css'
+// import 'animate.css'
 
 const { createClient } = require('@supabase/supabase-js');
 const supabaseUrl = 'https://eggtdvvjoksncmdbxgsz.supabase.co'
