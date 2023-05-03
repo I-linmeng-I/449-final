@@ -179,7 +179,7 @@ function App() {
       newTodos.splice(index, 1)
       setTodos(newTodos)
     }, 700);
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('todolist')
       .delete()
       .match({ id: todos[index].id });
